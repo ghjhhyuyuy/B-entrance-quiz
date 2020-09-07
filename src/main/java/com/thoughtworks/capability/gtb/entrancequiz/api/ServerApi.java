@@ -25,12 +25,17 @@ public class ServerApi {
             "谌哲","董翔锐","陈泰宇","赵允齐","张柯","廖文强","刘轲",
             "廖浚斌","凌凤仪"};
     public ServerApi(){
+        createOriginList(studentList);
+    }
+
+    private void createOriginList(List<Student> studentList) {
         Student student;
         for (int i = 0; i < names.length; i++) {
             student = new Student(i+1,names[i]);
             studentList.add(student);
         }
     }
+
     @GetMapping(path = "/getStudents")
     @ResponseStatus(HttpStatus.OK)
     @CrossOrigin
@@ -50,19 +55,21 @@ public class ServerApi {
     @ResponseStatus(HttpStatus.OK)
     @CrossOrigin
     public List<Group> getGroups() {
-        randomlySortedList(studentList);
+        List<Student> newStudentList = new ArrayList<>();
+        createOriginList(newStudentList);
+        randomlySortedList(newStudentList);
         int numberOfLine = names.length/6;
         int moreInLine = names.length%6;
         int index = 0;
         groupList.clear();
         for (int i = 0; i < moreInLine; i++) {
-            List<Student> groupStudents = studentList.subList(index,index+numberOfLine+1);
+            List<Student> groupStudents = newStudentList.subList(index,index+numberOfLine+1);
             Group group = new Group("Team "+ (i + 1),groupStudents);
             index += numberOfLine+1;
             groupList.add(group);
         }
         for (int i = 0; i < 6 - moreInLine; i++) {
-            List<Student> groupStudents = studentList.subList(index,index+numberOfLine);
+            List<Student> groupStudents = newStudentList.subList(index,index+numberOfLine);
             Group group = new Group("Team "+ (i + moreInLine + 1),groupStudents);
             index += numberOfLine+1;
             groupList.add(group);
