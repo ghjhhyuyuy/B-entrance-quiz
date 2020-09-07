@@ -109,12 +109,12 @@ public class ServerApi {
         }
     }
 
-    @PostMapping(path = "/updateTeamName/{groupId}/{groupName}")
+    @PostMapping(path = "/updateTeamName/{groupId}")
     @CrossOrigin
-    public ResponseEntity updateTeamName(@PathVariable String groupName, @PathVariable int groupId) {
+    public ResponseEntity updateTeamName(@PathVariable int groupId,@RequestBody(required = false) String groupName) {
         List<Group> groups = groupList.stream().filter(theGroup -> theGroup.getGroupName().equals(groupName)).collect(Collectors.toList());
         if (groups.isEmpty()) {
-            Group group = groupList.get(groupId - 1);
+            Group group = groupList.get(groupId);
             group.setGroupName(groupName);
             return ResponseEntity.ok().build();
         }
