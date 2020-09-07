@@ -33,11 +33,13 @@ public class ServerApi {
     }
     @GetMapping(path = "/getStudents")
     @ResponseStatus(HttpStatus.OK)
+    @CrossOrigin
     public List<Student> getStudentList() {
         return studentList;
     }
 
     @PostMapping(path = "/addStudent/{studentName}")
+    @CrossOrigin
     public ResponseEntity addStudent(@PathVariable String studentName) {
         Student student = new Student(studentList.size()+1,studentName);
         studentList.add(student);
@@ -46,6 +48,7 @@ public class ServerApi {
 
     @GetMapping(path = "/getGroups")
     @ResponseStatus(HttpStatus.OK)
+    @CrossOrigin
     public List<Group> getGroups() {
         randomlySortedList(studentList);
         int numberOfLine = names.length/6;
@@ -67,6 +70,7 @@ public class ServerApi {
         return groupList;
     }
     @PostMapping(path = "/updateTeamName/{groupId}/{groupName}")
+    @CrossOrigin
     public ResponseEntity updateTeamName(@PathVariable String groupName,@PathVariable int groupId) {
         List<Group> groups = groupList.stream().filter(theGroup -> theGroup.getGroupName().equals(groupName)).collect(Collectors.toList());
         if(groups.isEmpty()){
