@@ -56,12 +56,11 @@ public class ServerApi {
     @GetMapping(path = "/getGroups")
     @ResponseStatus(HttpStatus.OK)
     @CrossOrigin
-    public List<Group> getGroups() throws IOException, ClassNotFoundException {
+    public List<Group> getGroups() throws ClassNotFoundException, IOException {
         List<Student> newStudentList = deepCopy(studentList);
-        createOriginList(newStudentList);
         randomlySortedList(newStudentList);
-        int numberOfLine = names.length / 6;
-        int moreInLine = names.length % 6;
+        int numberOfLine = studentList.size() / 6;
+        int moreInLine = studentList.size() % 6;
 
         if (groupList.isEmpty()) {
             createNewGroup(newStudentList,moreInLine,numberOfLine);
@@ -90,7 +89,7 @@ public class ServerApi {
         for (int i = 0; i < 6 - moreInLine; i++) {
             List<Student> groupStudents = newStudentList.subList(index, index + numberOfLine);
             groupList.get(i + moreInLine).setMembers(groupStudents);
-            index += numberOfLine + 1;
+            index += numberOfLine;
         }
     }
 
@@ -105,7 +104,7 @@ public class ServerApi {
         for (int i = 0; i < 6 - moreInLine; i++) {
             List<Student> groupStudents = newStudentList.subList(index, index + numberOfLine);
             Group group = new Group("Team " + (i + moreInLine + 1), groupStudents);
-            index += numberOfLine + 1;
+            index += numberOfLine;
             groupList.add(group);
         }
     }
