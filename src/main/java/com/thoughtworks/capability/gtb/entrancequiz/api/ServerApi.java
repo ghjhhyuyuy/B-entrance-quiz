@@ -49,7 +49,7 @@ public class ServerApi {
     public ResponseEntity addStudent(@PathVariable String studentName) {
         Student student = new Student(studentList.size() + 1, studentName);
         studentList.add(student);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(studentList);
     }
 
     @GetMapping(path = "/getGroups")
