@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by wzw on 2020/9/7.
@@ -36,8 +37,8 @@ public class ServerApi {
         return studentList;
     }
 
-    @PostMapping(path = "/addStudent")
-    public ResponseEntity addStudent(String studentName) {
+    @PostMapping(path = "/addStudent/{studentName}")
+    public ResponseEntity addStudent(@PathVariable String studentName) {
         Student student = new Student(studentList.size()+1,studentName);
         studentList.add(student);
         return ResponseEntity.ok().build();
@@ -65,7 +66,16 @@ public class ServerApi {
         }
         return groupList;
     }
-
+    @PostMapping(path = "/updateTeamName/{groupId}/{groupName}")
+    public ResponseEntity updateTeamName(@PathVariable String groupName,@PathVariable int groupId) {
+        List<Group> groups = groupList.stream().filter(theGroup -> theGroup.getGroupName().equals(groupName)).collect(Collectors.toList());
+        if(groups.isEmpty()){
+            Group group = groupList.get(groupId - 1);
+            group.setGroupName(groupName);
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.status(HttpStatus.CONFLICT).build();
+    }
     private void randomlySortedList(List<Student> studentList) {
         Collections.shuffle(studentList);
     }
