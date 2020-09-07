@@ -15,6 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Group {
+    private int groupId;
     private String groupName;
     private List<Student> members;
 }

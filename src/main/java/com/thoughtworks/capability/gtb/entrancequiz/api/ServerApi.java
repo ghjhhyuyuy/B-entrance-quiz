@@ -97,13 +97,13 @@ public class ServerApi {
         int index = 0;
         for (int i = 0; i < moreInLine; i++) {
             List<Student> groupStudents = newStudentList.subList(index, index + numberOfLine + 1);
-            Group group = new Group("Team " + (i + 1), groupStudents);
+            Group group = new Group(i,"Team " + (i + 1), groupStudents);
             index += numberOfLine + 1;
             groupList.add(group);
         }
         for (int i = 0; i < 6 - moreInLine; i++) {
             List<Student> groupStudents = newStudentList.subList(index, index + numberOfLine);
-            Group group = new Group("Team " + (i + moreInLine + 1), groupStudents);
+            Group group = new Group(i + moreInLine,"Team " + (i + moreInLine + 1), groupStudents);
             index += numberOfLine;
             groupList.add(group);
         }
