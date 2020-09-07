@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -34,21 +35,27 @@ public class ServerApi {
     }
     @GetMapping(path = "/getGroups")
     public List<Group> getGroups() {
+        randomlySortedList(studentList);
         int numberOfLine = names.length/6;
         int moreInLine = names.length%6;
         int index = 0;
+        groupList.clear();
         for (int i = 0; i < moreInLine; i++) {
             List<Student> groupStudents = studentList.subList(index,index+numberOfLine+1);
-            Group group = new Group("Team "+ i + 1,groupStudents);
+            Group group = new Group("Team "+ (i + 1),groupStudents);
             index += numberOfLine+1;
             groupList.add(group);
         }
-        for (int i = moreInLine; i < 6 - moreInLine; i++) {
+        for (int i = 0; i < 6 - moreInLine; i++) {
             List<Student> groupStudents = studentList.subList(index,index+numberOfLine);
-            Group group = new Group("Team "+ i + 1,groupStudents);
+            Group group = new Group("Team "+ (i + moreInLine + 1),groupStudents);
             index += numberOfLine+1;
             groupList.add(group);
         }
         return groupList;
+    }
+
+    private void randomlySortedList(List<Student> studentList) {
+        Collections.shuffle(studentList);
     }
 }
