@@ -2,8 +2,9 @@ package com.thoughtworks.capability.gtb.entrancequiz.api;
 
 import com.thoughtworks.capability.gtb.entrancequiz.domain.Group;
 import com.thoughtworks.capability.gtb.entrancequiz.domain.Student;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,10 +31,20 @@ public class ServerApi {
         }
     }
     @GetMapping(path = "/getStudents")
+    @ResponseStatus(HttpStatus.OK)
     public List<Student> getStudentList() {
         return studentList;
     }
+
+    @PostMapping(path = "/addStudent")
+    public ResponseEntity addStudent(String studentName) {
+        Student student = new Student(studentList.size()+1,studentName);
+        studentList.add(student);
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping(path = "/getGroups")
+    @ResponseStatus(HttpStatus.OK)
     public List<Group> getGroups() {
         randomlySortedList(studentList);
         int numberOfLine = names.length/6;
