@@ -32,4 +32,23 @@ public class ServerApi {
     public List<Student> getStudentList() {
         return studentList;
     }
+    @GetMapping(path = "/getGroups")
+    public List<Group> getGroups() {
+        int numberOfLine = names.length/6;
+        int moreInLine = names.length%6;
+        int index = 0;
+        for (int i = 0; i < moreInLine; i++) {
+            List<Student> groupStudents = studentList.subList(index,index+numberOfLine+1);
+            Group group = new Group("Team "+ i + 1,groupStudents);
+            index += numberOfLine+1;
+            groupList.add(group);
+        }
+        for (int i = moreInLine; i < 6 - moreInLine; i++) {
+            List<Student> groupStudents = studentList.subList(index,index+numberOfLine);
+            Group group = new Group("Team "+ i + 1,groupStudents);
+            index += numberOfLine+1;
+            groupList.add(group);
+        }
+        return groupList;
+    }
 }
