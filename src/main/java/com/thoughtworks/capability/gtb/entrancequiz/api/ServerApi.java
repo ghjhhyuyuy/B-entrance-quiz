@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -55,8 +56,8 @@ public class ServerApi {
     @GetMapping(path = "/getGroups")
     @ResponseStatus(HttpStatus.OK)
     @CrossOrigin
-    public List<Group> getGroups() {
-        List<Student> newStudentList = new ArrayList<>();
+    public List<Group> getGroups() throws IOException, ClassNotFoundException {
+        List<Student> newStudentList = deepCopy(studentList);
         createOriginList(newStudentList);
         randomlySortedList(newStudentList);
         int numberOfLine = names.length / 6;
@@ -68,6 +69,15 @@ public class ServerApi {
             keepGroupNameGetNewGroup(newStudentList,moreInLine,numberOfLine);
         }
         return groupList;
+    }
+
+    private List<Student> deepCopy(List<Student> studentList) throws IOException, ClassNotFoundException {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        ObjectOutputStream out = new ObjectOutputStream(byteArrayOutputStream);
+        out.writeObject(studentList);
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
+        ObjectInputStream in = new ObjectInputStream(byteArrayInputStream);
+        return (List<Student>) in.readObject();
     }
 
     private void keepGroupNameGetNewGroup(List<Student> newStudentList,int moreInLine,int numberOfLine) {
